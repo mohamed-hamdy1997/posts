@@ -1,0 +1,16 @@
+li{
+    display: inline-block;
+}
+.add-comment{
+    display: block;
+}
+.rounded-12{
+    border-radius: 12px !important;
+}
+.mt-3 a:hover{
+    text-decoration: none;
+}
+.row{
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
