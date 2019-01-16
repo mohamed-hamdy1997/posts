@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Http\Resources\Post\PostCollection;
 use App\Http\Resources\Post\PostResource;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
 use App\User;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 use Validator ;
 use Illuminate\Http\Request;
 
@@ -53,15 +54,13 @@ class PostsController extends Controller
             $this->validate($request, [
                 'title' => 'required',
                 'body' => 'required',
-                'post_image' => 'image|nullable|max:1024 | mimes:jpg,png,jpeg,svg',
+                'post_image' => 'image|nullable|max:3024 | mimes:jpg,png,jpeg,svg',
                 'post_video' => 'nullable | max:20000 |mimes:mp4,3pg,flv,mkv,weba',
                 'post_file' => 'nullable|max:1024 | mimes:pdf,txt,docx,doc,pptx,ppt,xls '
             ]);
 
-//upload image
+            // upload image
             if ($request->hasFile('post_image')) {
-
-//            foreach ($request->post_image as $post_image) {
 
                 $filenameWithExtention = $request->file('post_image')->getClientOriginalName();
                 $fileName = pathinfo($filenameWithExtention, PATHINFO_FILENAME);
@@ -73,8 +72,7 @@ class PostsController extends Controller
             }
 
 
-//        upload video
-
+           //upload video
             if ($request->hasFile('post_video')) {
 
                 $filenameWithExtention = $request->file('post_video')->getClientOriginalName();
@@ -86,8 +84,7 @@ class PostsController extends Controller
 
             }
 
-            //        upload file
-
+            //upload file
             if ($request->hasFile('post_file')) {
 
                 $filenameWithExtention = $request->file('post_file')->getClientOriginalName();
@@ -99,7 +96,6 @@ class PostsController extends Controller
 
 
             }
-
 
             $post = new Post;
             $post->title = $request->input('title');
@@ -115,12 +111,6 @@ class PostsController extends Controller
             return redirect('/login')->with('Unauthorized' , 'Please Login First');
         }
     }
-
-//
-//    public function show(Post $post)
-//    {
-//        return new PostResource($post);
-//    }
 
     /**
      * Show the form for editing the specified resource.
@@ -151,9 +141,6 @@ class PostsController extends Controller
         $post = Post::findOrFail($id);
 
      if((auth()->user()->id == $post->user_id) || (auth()->user()->type == 'admin' ) ){
-//        $fileNameStoreImage = null;
-//        $fileNameStoreVideo =null;
-//        $fileNameStoreFile = null;
 
         $fileNameStoreImage = $post->post_image;
         $fileNameStoreVideo = $post->post_video;
@@ -162,7 +149,7 @@ class PostsController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
-            'post_image' => 'image|nullable|max:1024 | mimes:jpg,png,jpeg,svg',
+            'post_image' => 'image|nullable|max:3024 | mimes:jpg,png,jpeg,svg',
             'post_video' => 'nullable | max:20000 |mimes:mp4,3pg,flv,mkv,weba',
             'post_file' => 'nullable|max:1024 | mimes:pdf,txt,docx,doc,pptx,ppt,xls '
         ]);
@@ -174,16 +161,10 @@ class PostsController extends Controller
             $fileName = pathinfo($filenameWithExtention, PATHINFO_FILENAME);
             $extension = $request->file('post_image')->getClientOriginalExtension();
             $fileNameStoreImage = $fileName . '_' . time() . '.' . $extension;
-
             $path = $request->file('post_image')->move(base_path() . '/public/uploaded/images/', $fileNameStoreImage);
-
-//            $fileNameStoreVideo = null;
-//            $fileNameStoreFile = null;
-
         }
 
 //        upload video
-
         if ($request->hasFile('post_video')) {
 
             $filenameWithExtention = $request->file('post_video')->getClientOriginalName();
@@ -198,7 +179,6 @@ class PostsController extends Controller
         }
 
         //        upload file
-
         if ($request->hasFile('post_file')) {
 
             $filenameWithExtention = $request->file('post_file')->getClientOriginalName();
@@ -212,7 +192,6 @@ class PostsController extends Controller
 //            $fileNameStoreImage = null;
         }
 
-//        $post =   Post::findOrFail($id);
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->post_image = $fileNameStoreImage;
@@ -235,21 +214,20 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post =   Post::findOrFail($id);
+        $comment = Comment::where('post_id',$id);
         if((auth()->user()->id == $post->user_id) ||  auth()->user()->type == 'admin'){
 
             if($post->post_image){
                 Storage::delete('/public/uploaded/images/'.$post->post_image);
-
             }
             if($post->post_video){
                 Storage::delete('/public/uploaded/videos/'.$post->post_video);
-
             }
             if($post->post_file){
                 Storage::delete('/public/uploaded/files/'.$post->post_file);
-
             }
 
+            $comment->delete();
             $post->delete() ;
             
             return redirect('/posts')->with('success', 'Done successfully');
@@ -260,6 +238,7 @@ class PostsController extends Controller
 
     }
 
+//    view post
  public function viewPost($id)
  {
      $post = Post::findOrFail($id);
@@ -280,7 +259,6 @@ class PostsController extends Controller
     }
 
     //delete comment
-
     public function destroyComment($id){
         $comment = Comment::findOrFail($id);
         $pid = $comment->post_id;

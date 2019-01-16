@@ -15,11 +15,11 @@
   <div class="panel-heading">
     <h3 class="panel-title">{{$post->title}}</h3>
   </div>
-  <div class="panel-body">
+  <div class="panel-body mh-100">
     <p>{{substr($post->body,0,50)}}</p>
 
       @if($post->post_image)
- <img src="{{ URL::to('/') }}/uploaded/images/{{$post->post_image}}" class="img-thumbnail" alt="{{$post->post_image}}" style="width:50%;height:50%" >
+ <img src="{{ URL::to('/') }}/uploaded/images/{{$post->post_image}}" class="img-thumbnail" alt="{{$post->post_image}}" style="width:65%;max-height:130px" >
       @endif
 
    <span class="label label-danger">created at : {{$post->created_at}}  </span>

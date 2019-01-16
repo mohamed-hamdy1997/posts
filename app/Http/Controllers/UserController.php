@@ -86,7 +86,6 @@ class UserController extends Controller
     }
 
   //update profile
-
     public function showUpdateProfilePage($id){
         $user = User::findOrFail($id);
         return view('admin.editProfile',compact('user'));
@@ -97,7 +96,7 @@ class UserController extends Controller
         $this->validate($request ,[
             'name' => 'required |string | max:50 | min:5',
             'email' => 'required |string|email|max:255',
-            'user_image' => 'image|nullable|max:1024 | mimes:jpg,png,jpeg,svg',
+            'user_image' => 'image|nullable|max:3024 | mimes:jpg,png,jpeg,svg',
         ]);
 
         if ($request->input('password')) {

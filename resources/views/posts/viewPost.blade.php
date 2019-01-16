@@ -1,12 +1,11 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="row container">
-{{--        @foreach($posts as $post)--}}
             <div class="col-sm-8" style="margin: auto;">
 
                 <div class="panel panel-primary">
                     <div class="panel-heading">
+
                         <h3 class="panel-title">{{$post->title}}</h3>
                     </div>
                     <div class="panel-body">
@@ -48,11 +47,10 @@
 
 
                         <div class="mt-3">
-                            
-                          <button> Like </button>
-                          <button class="btn btn-secondary btn-sm"><a href="#addComment" class="text-white"> Add Comment </a></button>
+                            <button class="btn btn-secondary btn-sm"><a href="#addComment" class="text-white"> Add Comment </a></button>
                         </div>
-                        {{--////////////////////--}}
+
+                        {{--view comments--}}
                         <div class="mt-3 text-left">
                             @foreach($post->comments as $comment)
                           <div class=" bg-light p-3 rounded-12">
@@ -72,7 +70,8 @@
                                 <hr>
                                 @endforeach
                     </div>
-{{--/////////////////////--}}
+
+        {{--add comment --}}
                         <div>
 
                             <form action="/posts/{{$post->id}}/addComment" method="post">
@@ -84,7 +83,7 @@
 
                                 <br>
 
-                                <input type="submit" value="Add Comment" class="btn btn-primary">
+                                <input type="submit" value="Comment" class="btn btn-primary">
                             </form>
                         </div>
 
