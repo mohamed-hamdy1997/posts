@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
 use App\User;
@@ -65,6 +66,7 @@ class UserController extends Controller
             return redirect('users')->with('You can\'t delete Your Self!!','');
         }
         Post::where('user_id' , $id)->delete();
+        Comment::where('user_id' , $id)->delete();
         User::findOrFail($id)->delete();
 
         $users =   User::paginate(5);
