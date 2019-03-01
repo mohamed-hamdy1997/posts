@@ -108,7 +108,7 @@ class PostsController extends Controller
 
             return redirect('/posts')->with('success', 'Done successfully');
         }else{
-            return redirect('/login')->with('Unauthorized' , 'Please Login First');
+            return redirect('/login')->with('error' , 'Please Login First');
         }
     }
 
@@ -218,7 +218,7 @@ class PostsController extends Controller
         if((auth()->user()->id == $post->user_id) ||  auth()->user()->type == 'admin'){
 
             if($post->post_image){
-                Storage::delete('/public/uploaded/images/'.$post->post_image);
+                Storage::delete('/uploaded/images/'.$post->post_image);
             }
             if($post->post_video){
                 Storage::delete('/public/uploaded/videos/'.$post->post_video);
@@ -229,7 +229,7 @@ class PostsController extends Controller
 
             $comment->delete();
             $post->delete() ;
-            
+
             return redirect('/posts')->with('success', 'Done successfully');
          }else{
            return redirect('/posts')->with('error','Unauthorized');
@@ -267,4 +267,3 @@ class PostsController extends Controller
     }
 
 }
-

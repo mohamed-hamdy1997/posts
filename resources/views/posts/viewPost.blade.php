@@ -33,10 +33,10 @@
 
 <div class="text-center" style="  display:block">
                         <span class="label label-danger">created at : {{$post->created_at}}  </span>
-                             <span class="label label-info">  by {{$post->user->name}}</span>
+                             <a href="/user/{{$post->user_id}}/posts"><span class="label label-info">  by {{$post->user->name}}</span></a>
                         @if (!\auth::guest())
                             @if((auth()->user()->id == $post->user_id) || (auth()->user()->type == 'admin') )
-                                
+
                                   <div style="  display:inline-block">
                                     <a href="/posts/{{$post->id}}/edit"><i class="fa fa-edit"></i></a>
                                     <a href="{{ action('PostsController@destroy',$post->id),'/destroy' }}"onclick="if(!confirm('Do you Delete This Post ?')) return false"><i class="fa fa-trash"></i></a>

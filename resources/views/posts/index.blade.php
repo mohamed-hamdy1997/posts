@@ -10,7 +10,7 @@
  <div class="row container">
     @foreach($posts as $post)
   <div class="col-sm-4">
-  
+
   <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">{{$post->title}}</h3>
@@ -23,22 +23,22 @@
       @endif
 
    <span class="label label-danger">created at : {{$post->created_at}}  </span>
-     <span class="label label-info">  by {{$post->user->name}}</span>
+    <a href="/user/{{$post->user_id}}/posts"> <span class="label label-info">  by {{$post->user->name}}</span></a>
 
       <a href="/posts/{{$post->id}}/view" class="float-right">View Post</a>
 
   </div>
 </div>
-  
+
   </div>
-   
+
   @endforeach
 
 
 </div>
 
 </div>
- 
+
 </div>
             {{$posts->links()}}
 
@@ -55,8 +55,3 @@
 @endif
 
            @endsection
-
-
-
- 
-
